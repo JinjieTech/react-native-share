@@ -38,7 +38,16 @@ RCT_EXPORT_MODULE();
             return failureCallback(error);
         }
 
-        if ([options[@"url"] rangeOfString:@"wam"].location != NSNotFound || [options[@"url"] rangeOfString:@"mp4"].location != NSNotFound) {
+        if ([options[@"url"] rangeOfString:@"png"].location != NSNotFound || [options[@"url"] rangeOfString:@"jpg"].location != NSNotFound) {
+          NSLog(@"Sending whatsapp image");
+            documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:options[@"url"]]];
+            documentInteractionController.UTI = @"net.whatsapp.image";
+            documentInteractionController.delegate = self;
+
+            [documentInteractionController presentOpenInMenuFromRect:CGRectMake(0, 0, 0, 0) inView:[[[[[UIApplication sharedApplication] delegate] window] rootViewController] view] animated:YES];
+            NSLog(@"Done whatsapp image");
+            successCallback(@[]);
+        } else if ([options[@"url"] rangeOfString:@"wam"].location != NSNotFound || [options[@"url"] rangeOfString:@"mp4"].location != NSNotFound) {
             NSLog(@"Sending whatsapp movie");
             documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:options[@"url"]]];
             documentInteractionController.UTI = @"net.whatsapp.movie";
